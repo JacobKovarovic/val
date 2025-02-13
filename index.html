@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+DK+Loopet:wght@100..400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('stardew.png') repeat center center/cover;
+            image-rendering: pixelated;
+        }
+        .container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+        }
+        .letter {
+            position: absolute;
+            width: 30%;
+            height: 30%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            transition: transform 0.5s ease-in-out;
+            filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.3));
+        }
+        .hidden {
+            transform: translateY(100%);
+        }
+        #heart {
+            position: absolute;
+            left: -390px;
+            animation: moveAndGrow 1s forwards ease-in-out;
+            animation-delay: 0.6s;
+            transform-origin: center;
+            opacity: 0;
+        }
+        #heart2 {
+            position: absolute;
+            left: -405px;
+            top: -20px;
+            animation: moveAndGrowSmall 1s forwards ease-in-out;
+            animation-delay: 0.8s;
+            transform-origin: center;
+            opacity: 0;
+        }
+        #heart3 {
+            position: absolute;
+            left: -370px;
+            top: 20px;
+            animation: moveAndGrowSmall 1s forwards ease-in-out;
+            animation-delay: 1.0s;
+            transform-origin: center;
+            opacity: 0;
+        }
+        @keyframes moveAndGrow {
+            0% {
+                opacity: 1;
+                transform: scale(0.2) rotate(340deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(360deg);
+            }
+        }
+        @keyframes moveAndGrowSmall {
+            0% {
+                opacity: 1;
+                transform: scale(0.2) rotate(340deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(0.6) rotate(360deg);
+            }
+        }
+        #exclamation {
+            position: absolute;
+            left: 560px;
+            top: 150px;
+            animation: popUp1 1s forwards ease-in-out;
+            animation-delay: 2.5s;
+            transform-origin: center;
+            opacity: 0;
+        }
+        #question1 {
+            position: absolute;
+            left: 528px;
+            top: 158px;
+            animation: popUp2 1s forwards ease-in-out;
+            animation-delay: 2.5s;
+            transform-origin: center;
+            transform: rotate(350deg);
+            opacity: 0;
+        }
+        #question2 {
+            position: absolute;
+            left: 592px;
+            top: 158px;
+            animation: popUp3 1s forwards ease-in-out;
+            animation-delay: 2.5s;
+            transform-origin: center;
+            transform: rotate(10deg);
+            opacity: 0;
+        }
+        @keyframes popUp1 {
+            0% {
+                opacity: 1;
+                transform: scale(0.2);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes popUp2 {
+            0% {
+                opacity: 1;
+                transform: scale(0.2) rotate(350deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(350deg);
+            }
+        }
+        @keyframes popUp3 {
+            0% {
+                opacity: 1;
+                transform: scale(0.2) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(10deg);
+            }
+        }
+        #letter {
+            position: absolute;
+            left: 562px;
+            bottom: -100px; /* Start below the viewport */
+            transition: bottom 1s ease-in-out;
+            opacity: 0; /* Initially hidden */
+        }
+        .rise-up {
+            bottom: 5px !important; /* Final position */
+            opacity: 1 !important; /* Make visible */
+        }
+        .fade-out {
+            opacity: 0 !important;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 5px solid #8B4513;
+            padding: 20px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+            font-family: 'Playwrite DK Loopet', 'Brush Script MT', cursive;
+            font-weight: 300;
+            font-size: 35px;
+            line-height: 1.0;
+            white-space: pre-wrap;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" onclick="openLetter()">
+        <img id="heart" src="heart.png" alt="Heart" class="letter">
+        <img id="heart2" src="heart.png" alt="Heart" class="letter">
+        <img id="heart3" src="heart.png" alt="Heart" class="letter">
+        <img id="exclamation" src="exclamation.png" alt="!" class="letter">
+        <img id="question1" src="question.png" alt="?" class="letter">
+        <img id="question2" src="question.png" alt="?" class="letter">
+        <img id="letter" src="mail.png" alt="Mail" class="letter" onclick="typeMessage('messageBox', valentineMessage)">
+    </div>
+    <div id="messageBox" class="message-box"></div>
+    <script>
+        const valentineMessage = `Dear Mira Patel,
+
+Will you be my valentine?
+
+Love,
+Jacob Kovarovic `;
+
+        function openLetter() {
+            // Hide exclamation and question marks
+            document.getElementById('exclamation').classList.add('fade-out');
+            document.getElementById('question1').classList.add('fade-out');
+            document.getElementById('question2').classList.add('fade-out');
+
+            // Wait a brief moment, then show and raise the letter
+            setTimeout(() => {
+                const letter = document.getElementById('letter');
+                letter.classList.add('rise-up');
+            }, 500);
+        }
+        function typeMessage(elementId, text) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block'; // Make message box visible
+            element.innerHTML = ''; // Clear any existing text
+            let i = 0;
+            let speed = 50; // typing speed in ms
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+    </script>
+
+</body>
+</html>
